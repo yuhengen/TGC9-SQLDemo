@@ -1,0 +1,68 @@
+create table book (
+    book_id int unsigned auto_increment primary key,
+    title varchar(100) not null,
+    synopsis text not null,
+    edition int not null
+) engine=innodb;
+
+// Modify varchar for title
+alter table book modify title varchar(200) not null;
+
+create table user (
+    user_id int unsigned auto_increment primary key,
+    name varchar(50) not null,
+    email varchar(100) not null
+) engine=innodb;
+
+// Rename a column
+alter table user rename column name to fullname;
+
+create table author (
+    author_id int unsigned auto_increment primary key,
+    first_name varchar(45) not null,
+    last_name varchar(50) not null
+) engine=innodb;
+
+// Add DOB to author
+alter table author add dob date not null;
+
+create table publisher (
+    publisher_id int unsigned auto_increment primary key,
+    name varchar(100) not null,
+    website varchar(100) not null
+) engine=innodb;
+
+// Remove website from publisher
+alter table publisher drop website;
+
+create table copy (
+    copy_id int unsigned auto_increment primary key,
+    book_condition varchar(20) not null,
+    book_id int unsigned not null,
+    foreign key(book_id) references book(book_id)
+) engine=innodb;
+
+create table copy_user (
+    copy_user_id int unsigned auto_increment primary key,
+    date_borrowed datetime not null,
+    copy_id int unsigned not null,
+    foreign key(copy_id) references copy(copy_id),
+    user_id int unsigned not null,
+    foreign key(user_id) references user(user_id)
+) engine=innodb;
+
+create table author_book (
+    author_book_id int unsigned auto_increment primary key,
+    author_id int unsigned not null,
+    foreign key(author_id) references author(author_id),
+    book_id int unsigned not null,
+    foreign key(book_id) references book(book_id)
+) engine=innodb;
+
+create table book_publisher (
+    book_publisher_id int unsigned auto_increment primary key,
+    publisher_id int unsigned not null,
+    foreign key(publisher_id) references publisher(publisher_id),
+    book_id int unsigned not null,
+    foreign key(book_id) references book(book_id)
+) engine=innodb;
